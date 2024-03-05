@@ -89,16 +89,16 @@ OBJS            = ${OBJS_CPP} ${OBJS_MOC}
 .PHONY: ${BIN_NAME} clean run build debug runbuild rundebug debugbuild
 .SECONDARY: ${MOC_GENS}
 
-ifeq (0, $(words $(findstring ${MAKECMDGOALS}, clean)))
-	include ${DEPS}
-endif
-
 define do_compile =
 	$(call print,Compiling:,$<,$@)
 	${V}${CXX} ${CXXFLAGS} ${LDLIBS} ${ILIBS} -c $< -o $@
 endef
 
 ${BIN_NAME}: ${BUILD_DIR}/${BIN_NAME}
+
+ifeq (0, $(words $(findstring ${MAKECMDGOALS}, clean)))
+-include ${DEPS}
+endif
 
 run rundebug: ${BIN_NAME}
 	${V}${BUILD_DIR}/${BIN_NAME}
